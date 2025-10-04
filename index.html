@@ -16,7 +16,7 @@
             height: 100vh;
         }
 
-        h1 {
+        h1, p {
             margin: 10px;
         }
 
@@ -34,9 +34,9 @@
             cursor: pointer;
         }
 
-        #message {
-            margin-top: 15px;
-            font-size: 18px;
+        button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -44,37 +44,46 @@
     <h1>guess the number</h1>
     <h1>1 - 10, 3 attempts</h1>
     <input type="number" id="guessInput" placeholder="Enter a number">
-    <button id="guessBtn">guess</button>
+    <button id="guessBtn">Guess</button>
+    <button id="resetBtn">Play Again</button>
     <p id="message"></p>
-    <h1 id="attempt">attempts : </h1>
+    <h1 id="attempt">attempts: 0</h1>
 
     <script>
-        let secretNumber = Math.floor(Math.random() * 10) + 1; 
-
-        let attempts = 0;
-        let attempt = document.getElementById(`attempt`);
-
         const guessInput = document.getElementById("guessInput");
-
         const guessBtn = document.getElementById("guessBtn");
-
+        const resetBtn = document.getElementById("resetBtn");
         const message = document.getElementById("message");
+        const attemptDisplay = document.getElementById("attempt");
+
+        let secretNumber;
+        let attempts;
+
+        function startGame() {
+            secretNumber = Math.floor(Math.random() * 10) + 1;
+            attempts = 0;
+            attemptDisplay.textContent = `attempts: ${attempts}`;
+            message.textContent = "";
+            guessBtn.disabled = false;
+            guessInput.value = "";
+            guessInput.focus();
+        }
 
         guessBtn.onclick = function() {
-            if(guessBtn.disabled) return; 
+            if(guessBtn.disabled) return;
 
-            let playerGuess = parseInt(guessInput.value);
+            let playerGuess = parseInt(guessInput.value.trim());
 
             if(isNaN(playerGuess)){
-                message.textContent = "put a real number.";
+                message.textContent = "enter a real number twin";
                 return;
             }
 
             attempts++;
-            attempt.textContent = `attempts : ${attempts}`;
+            attemptDisplay.textContent = `attempts: ${attempts}`;
 
             if(playerGuess === secretNumber){
-                message.textContent = `correct it was ${secretNumber}`;
+                message.textContent = `correct it was ${secretNumber}.`;
                 guessBtn.disabled = true;
             } else if(playerGuess > secretNumber){
                 message.textContent = "too high";
@@ -83,11 +92,17 @@
             }
 
             if(attempts >= 3 && playerGuess !== secretNumber){
-                message.textContent = "incorrect it was " + secretNumber;
+                message.textContent = `incorrect it was ${secretNumber}.`;
                 guessBtn.disabled = true;
             }
+
+            guessInput.value = "";
+            guessInput.focus();
         }
 
+        resetBtn.onclick = startGame;
+
+        startGame();
     </script>
 </body>
 </html>
