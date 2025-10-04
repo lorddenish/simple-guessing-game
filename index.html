@@ -42,7 +42,7 @@
 </head>
 <body>
     <h1>guess the number</h1>
-    <h1>1 - 10</h1>
+    <h1>1 - 10, 3 attempts</h1>
     <input type="number" id="guessInput" placeholder="Enter a number">
     <button id="guessBtn">guess</button>
     <p id="message"></p>
@@ -66,7 +66,7 @@
             let playerGuess = parseInt(guessInput.value);
 
             if(isNaN(playerGuess)){
-                message.textContent = "Please enter a valid number!";
+                message.textContent = "put a real number.";
                 return;
             }
 
